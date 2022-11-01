@@ -29,11 +29,15 @@
 											<td>{{comment.name}}</td>
 											<td>am {{ comment.createdAt | convertDate }}</td>
 											<td>{{ comment.content }}</td>
+											{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+												<td> {% include "website/article/delete_comment.html.twig" with { 'comment' : comment } %} </td>
+											{% endif %}
 										</tr>
 									{% endfor %}
 								</tbody>
 							</table>
 						</div>
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 							<div class="card mb-4">
 								<div class="card-header">Add new comment</div>
 								{{ form_start(form) }}
@@ -41,6 +45,7 @@
 								<button class="btn btn-primary">{{ submit_label | default('Comment') }}</button>
 								{{ form_end(form) }}
 							</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
