@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="{{ path('app_article') }}"><img style="width: 60px;height: 55px;" src="{{ asset('logo.png') }}" ></a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<a  >Blog Name</a>
-			</div>
-	</nav>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand"></a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_article') }}">Übersicht</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="">Neuer Eintrag</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="">Impressum</a>
-					</li>
-				</ul>
-				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<a class="btn btn-outline-success" href="">Logout</a>
-				{% else %}
-				<a class="btn btn-outline-success" href="">Login</a>
-				{% endif %}
-			</div>
-		</div>
-	</nav>
-        {% block body %}{% endblock %}
-    </body>
+			<div class="container-fluid">
+				<a class="navbar-brand" href="{{ path('app_article') }}"><img style="width: 60px;height: 55px;" src="{{ asset('logo.png') }}"></a>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<a href="{{ path('app_article') }}">Blog Name</a>
+				</div>
+			</nav>
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand"></a>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_article') }}">Übersicht</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="">Neuer Eintrag</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="">Impressum</a>
+							</li>
+						</ul>
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							<a class="btn btn-outline-success" href="">Logout</a>
+						{% else %}
+							<a class="btn btn-outline-success" href="">Login</a>
+						{% endif %}
+					</div>
+				</div>
+			</nav>
+			{% block body %}{% endblock %}
+		</body>
+	</body>
 </html>
