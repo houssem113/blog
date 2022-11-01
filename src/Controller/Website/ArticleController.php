@@ -3,7 +3,11 @@
 namespace App\Controller\Website;
 
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\User;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,12 +33,36 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{id}', name: 'app_detail')]
-    public function detail(Article $article): Response
+    #[Route('/article/author/{id}', name: 'app_article_author')]
+    public function postesByAuthor(User $author, Request $request): Response
     {   
+        $posts = $this->paginator->paginate(
+            $author->getArticles(),
+            $request->query->getInt('page', 1),
+            3
+        );
+        return $this->render('website/article/index.html.twig', [
+            'articles' => $posts
+        ]);
+    }
+    
+    #[Route('/article/{id}', name: 'app_detail')]
+    public function detail(Article $article, Request $request, EntityManagerInterface $entityManager): Response
+    {   
+        $comment = new Comment();
+        $comment->setArticle($article);
 
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_detail', ['id' => $article->getId()]);
+        }
         return $this->render('website/article/detail.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'form' => $form->createView()
         ]);
     }
 

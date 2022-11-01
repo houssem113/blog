@@ -9,7 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
@@ -17,12 +19,15 @@ class Article
     use ResourceId;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
@@ -112,5 +117,10 @@ class Article
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }

@@ -2,6 +2,7 @@
 
 {% block title %}Home
 {% endblock %}
+
 {% block body %}
 	<main class="container">
 		<div class="row mb-2">
@@ -22,7 +23,8 @@
 									...</a>
 							</p>
 							<strong class="d-inline-block mb-2 text-primary">
-								<a>Author :
+								<a href="{{ path('app_article_author', {id : article.author.id }) }}">
+									Author :
 									{{article.author.email}}</a>
 							</strong>
 							<div class="mb-1 text-muted">
