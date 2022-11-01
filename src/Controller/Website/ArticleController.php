@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3Validator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +48,7 @@ class ArticleController extends AbstractController
     }
     
     #[Route('/article/{id}', name: 'app_detail')]
-    public function detail(Article $article, Request $request, EntityManagerInterface $entityManager): Response
+    public function detail(Article $article, Request $request, EntityManagerInterface $entityManager, Recaptcha3Validator $recaptcha3Validator): Response
     {   
         $comment = new Comment();
         $comment->setArticle($article);
@@ -56,9 +57,12 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($comment);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_detail', ['id' => $article->getId()]);
+            $score = $recaptcha3Validator->getLastResponse()->getScore();
+            if($score>0.5){
+                $entityManager->persist($comment);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_detail', ['id' => $article->getId()]);
+            }
         }
         return $this->render('website/article/detail.html.twig', [
             'article' => $article,
