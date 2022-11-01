@@ -33,17 +33,19 @@
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_article') }}">Übersicht</a>
 							</li>
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 							<li class="nav-item">
-								<a class="nav-link" href="">Neuer Eintrag</a>
+								<a class="nav-link" href="{{ path('app_article_new') }}">Neuer Eintrag</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="">Impressum</a>
 							</li>
+							{% endif %}
 						</ul>
 						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-							<a class="btn btn-outline-success" href="">Logout</a>
+							<a class="btn btn-outline-success" href="{{ path('app_logout') }}">Logout</a>
 						{% else %}
-							<a class="btn btn-outline-success" href="">Login</a>
+							<a class="btn btn-outline-success" href="{{ path('app_login') }}">Login</a>
 						{% endif %}
 					</div>
 				</div>
